@@ -24,6 +24,8 @@ PAYLOAD = {
 
 json_body = json.dumps(PAYLOAD, separators=(",", ":"), sort_keys=True).encode("utf-8")
 
+print(json_body)
+
 signature = hmac.new(
     SIGNING_SECRET,
     json_body,
