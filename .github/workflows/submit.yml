@@ -1,0 +1,28 @@
+name: Submit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set action run link
+        run: |
+          echo "ACTION_RUN_LINK=https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
+      - name: Run submission script
+        env:
+          ACTION_RUN_LINK: ${{ env.ACTION_RUN_LINK }}
+          B12_SIGNING_SECRET: ${{ secrets.B12_SIGNING_SECRET }}
+        run: |
+          python main.py
